@@ -5,9 +5,12 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "lint" : "eslint . "
+    "lint": "eslint . "
   },
   "author": "mamusante",
   "license": "ISC",
-  "type" : "module"
+  "type": "module",
+  "devDependencies": {
+    "prettier": "3.6.2"
+  }
 }
