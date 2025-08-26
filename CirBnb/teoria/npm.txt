@@ -1,0 +1,23 @@
+es una herraienta de la terminal, apra arrancar un proyecto npm hacemos en la terminal 
+npm init 
+crea un package.json
+
+una vez q tenemos nuestro proyecto podemos instalarlos dependencias, las bucamos y hacemos npm install y nombre de dep
+node module es otra carpeta q agarra y me pone todas las dependencias q me baje
+siempre en .gitignore ponemos que no se suba node_modules
+
+cuando me bajo el repo tengo q hacer un npm install para q me baje las dependencias a mi compu 
+
+en mi proyecto tengo q xambiar los imports 
+
+import { 
+    Hotel,
+    Reserva
+}from "./funciones.js"
+
+pongo en package.json que el poryecto es de type: module --> "type": "module"
+
+para exportar:
+
+pongo export adelante de cada clase
+import y require no coexisten

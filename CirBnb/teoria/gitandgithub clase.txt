@@ -1,0 +1,33 @@
+Git
+
+git branch <nombre rama> -> asi creo una nueva rama
+git switch <mirama> --> apunto a mi rama creada para pararme sobre ella
+
+git merge <rama con los cambios a traer> 
+se genera un nuevo commit donde se unifican los cambios
+
+git merge --squash
+los commits de la rama q se mergea se ponen todos en un solo commit
+
+git rebase
+el rebase hace todo en el main y queda mas lineal los cambios
+
+git flow --> tienen distintas ramas para trabajar 
+main, hotfix, release, develop, feature
+
+github flow --> recomiendan usar este
+change , main, change, change
+
+pull request --> solicitud para q se integren mis cambios al main
+issue --> descriopcion de lo q tengo q agregar o resolver
+
+versionado semantico: lineamiento, se usa para las versiones
+
+    MAJOR.MINOR.PATCH
+    1.2.1
+
+    Major: un icremento indica cambios incompatibles en la API del componente , es decir lo q ya esta andando no funcionaria con los nuevos camvios
+    Minor: el incremento indica el agregado de nuevas funcionalidaddes retrocompatbles con versiones anteriores
+    Patch: fixes retrocompatbles, comienzan en cero con cada minor
+
+changelog: archivo que vamos anotando los camvios q hubo para cada version

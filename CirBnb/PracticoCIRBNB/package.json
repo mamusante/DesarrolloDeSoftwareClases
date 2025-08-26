@@ -1,0 +1,13 @@
+{
+  "name": "cirbnb",
+  "version": "1.0.0",
+  "description": "ejercicio de clase cirbnb",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint" : "eslint . "
+  },
+  "author": "mamusante",
+  "license": "ISC",
+  "type" : "module"
+}
