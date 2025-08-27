@@ -19,7 +19,9 @@ github flow --> recomiendan usar este
 change , main, change, change
 
 pull request --> solicitud para q se integren mis cambios al main
-issue --> descriopcion de lo q tengo q agregar o resolver
+    --> peer review : tiene q estar en el TP
+    --> se van agregando funcionalidades de a poco, hago el pull request para poder mergear no lo mergeo de una
+issue --> descriopcion de lo q tengo q agregar o resolver lo puedo asociar a un pull request o viceversa
 
 versionado semantico: lineamiento, se usa para las versiones
 

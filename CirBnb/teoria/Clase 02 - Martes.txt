@@ -1,0 +1,221 @@
+26 de agosto
+
+ Arquitectura multicapa
+
+----------------------------------------------------------
+ Presentacion: permite presentar , interfaz para usuario
+----------------------------------------------------------
+ Aplicacion: objetos q orquestan las llamadas a los objetos de dominio (pasos para q se cumplan los casos de uso)
+----------------------------------------------------------
+ Dominio: donde se resuelve la idea de negocio
+----------------------------------------------------------
+ Persistencia: datos perdurables
+ ---------------------------------------------------------
+
+
+Donde se ejecutan las cosas??
+
+Hay apps q se corren 100% en el dispositivo
+Otras necesitan internet --> son apps web
+
+Apps web: siguen un patron, hay informacion q manejan q no esta guardada localmente
+
+    Centralizacion: que tan juntos estan mis componentes de sw o que tan separados estan. En cuantos componentes voy 
+    dividiendo mi aplicacion. Que tan centralizado o distribuida es mi Arquitectura
+    Arquitectura donde esta en el mismo lugar: arquitectura monolitica
+    Arquitecturas mas distribuidas: microservicios
+
+Necesidad: construir una aplicacion distribuidas
+Los componentes se conectan a traves de internet
+
+Internet: red de información global (fisica), es la red fisica, la web se monta sobre internet
+
+Web: WWW un servidor y un cliente, el servidor da las cosas, los clientes le piden y lo pueden procesar, ese conjunto
+de programas, softwares es la web
+
+Browser: nace para permitir a documentos de hipertextos y tiene el patron de cliente servidor para seguir
+los hipervinculos. El browser hace el renderizado, o sea lo muestra y me muestra el resultado siguiente. El browser
+pasa a ser el cliente
+
+Arquitectura cliente - servidor
+
+HTML: lo que permite interpretar el texto que me manda el servidor, titulo, subtitulo etc.
+
+Protocolo: forma de comunicarse
+
+HTTP: protocolo para transferir texto, esta basado en texto, va a tener un pedido y una respuesta
+va a ser stateless (no hay info q se almacene entre cada pedido y rta)
+    ~ El pedido (texto) tiene una estructura (RUTA): 
+        - metodo (que accion estamos haciendo) con la URI (identificador del recurso al q quiero acceder): 
+            + GET: obtener recurso
+            + POST: crear recurso
+            + PUT: modificar recurso (le mando el estado final, o sea se cambia lo anterior por lo nuevo q mando)
+            + PATCH: modificacion parcial del recurso, agrego lo nuevo o lo distinto
+            + DELETE: borrar recurso
+        - headers: poseen metadata, ej: autorization, usuario, user agent
+        - body: datos relevantes del pedido, ej: objeto a crear 
+    
+    ~ Response:
+        - status: un codigo de exito o error
+        - headers: metadata
+        - body: la respuesta en si (carga util de la rta)
+
+Nuestras aplicaciones van a responder a una arquitectura cliente - servidor (1 servidor, varios clientes), donde cada cliente hace un
+pedido y el servidor da una respuesta, para esto voy a usar el protocolo HTTP. El cliente va a ser el browser (hay apps q hacen de browser
+por ej la app de ig no usa el browser pero anda igual).
+Los browser entienden HTML y hoy en dia tmb JavaScript
+Atensaooo: no hay response sin pedido antes.
+
+=== Server-side o cliente liviano: lo unico q sabe hacer el cliente es pedir rutas, todo el trabajo esta en el servidor 
+(cada vez que toco un boton es un nuevo pedido, este tipo de apps vamos a ver en diseño), devuelve HTML el servidor siempre
+
+(JavaScript es un lenguaje interpretado: no se compila, se lee linea por linea por un interprete, cada linea se compila 
+y se ejecuta y asi)
+
+=== Client-side o cliente pesado: aplicaciones que tambien tienen codigo que corre del lado del cliente (con javascript), estas apps
+vamos a hacer en la materia. Arranco con un gran pedido y ese pedido va a tener mucho javascript. 
+El comportamiento lo tiene el cliente, pero los datos estan en el servidor.
+
+Entonces... (En client - side)
+
+Presentacion --> Cliente (pq el usuario usa la app entonces cuanto mas cerca mas rapido)
+Aplicacion   --> Cliente y Servidor
+Dominio      --> Servidor (pq esta muy relacionado con la persistencia)
+Persistencia --> Servidor (pq todos los clietnes acceden a los mismos datos, o sea misma instancia)
+
+En server-side esta todo en servidor salvo una pequeña parte de la Presentacion
+
+BackEnd: Lo q corre en el lado del servidor
+FrontEnd: Lo q corre en el lado del cliente 
+
+Necesito adaptar los casos de uso de nuestra capa de aplicacion al protocolo HTTP.
+Por ejemplo quiero crear un usuario, como mando los datos del usuario al servidor?? Debemos usar algun formato para mandar esto
+
+XML --> Es un HTML pero generico para cualquier cosa, entonces puedo armar:
+<usuario>
+    <nombre>Juan</nombre>
+    <apellido>Perez</apellido>
+    <edad>35</edad>
+</usuario>
+
+JSON --> este es mejor , se usa mas , porque el otro es muy pesado y las listas hacerlas en XML es una paja
+
+{
+    "nombre": "Juan",
+    "apellido":"perez",
+    "mascotas":[{...}]
+}
+
+Entonces en el body de mis pedidos o rtas me mando JSON
+
+Lo primero q tiene q definir el cliente es donde esta el servidor: es accesible a traves de internet, a traves de la IP 
+Se usan nombre de dominio: como google.com , que es un alias para direcciones IP. Asique necesito un alias de mi aplicacion para 
+poder pedirle cosas. El DNS traduce el alias en la IP. 
+Como publico la app? Levanto mi servidor con una direccion IP y dsp con mi nombre se pueden conectar a mi servidor
+Una vez q ya se donde me conecto tengo q ver como modelo el acceso a cada uno de los casos de uso q quiero representar en mi app.
+
+Ej: Crear Prenda
+
+1) Pedido HTTP: Elijo q metodo necesito, luego defino la URL a pasar
+    Elijo POST 
+
+    POST www.quemepongo.com/prenda
+
+    armo un JSON con la prenda para mandarlo en el body
+
+    {
+        "nombre":"una remera linda",
+        "color":"azul"
+    }
+
+    un header a mandar puede ser "content-type":"application/json" // asi le digo q le estoy mandando json
+
+    (no pongo crear prenda porq es redundante, porq el POST ya es crear)
+
+2) Respuesta HTTP
+    status: 
+        1xx:
+        2xx: son casos de exito
+            200 ok
+            201 created
+            202 acepted
+        3xx: redirecciones (por ej si no esta lo q queres porq lo cambiaron de lugar)
+        4xx: client error (algo de lo q mando el cliente esta mal)
+            400: bad request
+            401: unauthorized
+            403: forbiddem
+            404: not found 
+            405: metodo no va con la direccion
+            418: im a teapot
+            409: conflict
+        5xx: server error
+            500: internal server error
+            502: bad gateway 
+            503: service unavailable
+    headers:
+    body:
+
+    En el servidor vamos a armar una API, devuelve los datos en JSON y respeta las reglas de HTTP, lo q va en la ruta es el recurso
+    sobre el cual estoy procesando, es una forma de modelar orientada a los recursos, eso es un modelado REST , o sea una API REST 
+
+    -----------------Ejercicio ejemplo-------------------
+
+    queremos modelar las rutas HTTP que satisfacen los casos de usos
+
+    --- Dar de alta un usuario 
+
+            Se pone usuarios porq el recurso es de tipo coleccion, si es singleton lo pongo en singular
+
+        POST www.unaaplicacion.com/usuarios
+
+        Body --> un json con la info
+
+        Response:
+            201 created
+            Body --> mando el objeto q acabo de crear con un ID (es por convencion que se hace eso)
+
+            400 error
+            Body --> la edad debe ser mayor a 0 qsy algo asi
+    
+    --- Obtener un usuario en particular
+
+            Tengo q mandar un parametro lo mando con : , se llaman path param
+
+        GET /usuarios/:id
+
+    --- Agregar una mascota a un usuario
+
+        POST /usuarios/:id/mascotas
+        Body --> le mando la mascota en un json
+
+        otra forma...
+
+        PUT /usuarios/:id
+        Body --> tengo q mandar todo el usuario nuevo
+
+        otra forma...
+
+        PATCH /usuarios/:id
+        Body --> le mando las mascotas
+
+    --- Buscar un usuario por nombre
+
+        armo un query params, dice que es un filtrado o buscado
+
+        GET /usuarios?nombre=jose
+
+        si tb quiero la edad agrego...
+
+        GET /usuarios?nombre=jose&edad=25
+
+        Si encuentra devuelve
+        200
+        [usuarios que cumplen]
+
+        Si no encuentra a nadie q cumpla el criterio devuelve por convencion
+        200 (porque la busqueda salio bien)
+        [] lista vacia
+
+    --- Borrar usuario
+
+        DELETE /usuarios/:id
