@@ -1,0 +1,55 @@
+Node --> funciona de interprete de JS y nos ofrece un par de funcionalidades mas
+     --> Maneja operaciones asincronas
+
+Entornos de ejecucion con funcionalidades, APIs, todo lo q necesites capo: RUNTIME le decimos los amigos
+En JS el RUNTIME es Node para crear cosas en el Backend, en frontend es el browser.
+
+Usamos Node en el servidor. Como junto esto con el HTTP?? Miterio
+
+en server.js
+
+const http = require('http');
+
+const server = http.createServer((req,res) : void => {
+    res.statusCode = 200;
+    res.setHeader('Content-Type', 'test/plain');
+    if(req.url == '/hello'){
+        res.end('Hello worldn')
+    } // hacer esto es una paja, tendria q poner 400 IF . El http de node es medio pajoso escribirlo
+        // YA ALGUIEN LO RESOLVIO POR NOSOTROS!! Usamos bibliotecas y frameworks (NPM nos deja traerlas)
+    
+})
+
+const PORT:number = 3000;
+server.listen(PORT, () : void => {
+    console.log("server running en el  http://localhost:3000")
+})
+
+127.0.0.1 --> la direccion IP del SELF o sea el equipo q la llama, alias es localhost
+
+ENDPOINT: ruta q tiene mi aplicacion, es lo mismo :P
+
+Desde el browser siempre se hace un get, por eso usamos una app para formatear los datos, elegir el metodo, etc
+Las apps mas conocidas son: CURL o postman
+
+nosotros vamos a tener muuuchas rutas para tener acceso a la app
+
+Biblio vs framework: codigo q hizo otra persona q usamos
+Biblio: Nosotros llamamos a cierta funcion de la biblio y seguimos escribiendo nuestro codigo
+Framework: se ocupa del flujo , hay inversion de control y dsp me pasa la pelota a mi pa q resuelva
+
+incluimos el sw de terceros, para eso usamos NPM (Node Package Manager)
+El wachin nos maneja las dependencias
+NPM viene embebido en node
+package.json lo arma npm y ahi me dice la info de mi app
+
+Nosotros vamos a usar Express JS para ayudarnos con las rutas.
+Para instalar una dependencia hacemos npm install express, en node modules me agrega express
+npm install a secas nos instala todas las dependencias q estan en el package json 
+
+Ahora vamo a ver como se modelan las rutas con express!!
+
+nada buscalo, esta en el TP de kommanda en index.js
+
+Primero modelamos el dominio!!
+
