@@ -139,11 +139,13 @@ Ej: Crear Prenda
             200 ok
             201 created
             202 acepted
+            204 No content
+            206 contenido parcial
         3xx: redirecciones (por ej si no esta lo q queres porq lo cambiaron de lugar)
         4xx: client error (algo de lo q mando el cliente esta mal)
             400: bad request
             401: unauthorized
-            403: forbiddem
+            403: forbidden
             404: not found 
             405: metodo no va con la direccion
             418: im a teapot
