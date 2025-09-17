@@ -1,6 +1,6 @@
 26 de agosto
 
- Arquitectura multicapa
+ Arquitectura **multicapa**
 
 ----------------------------------------------------------
  Presentacion: permite presentar , interfaz para usuario
